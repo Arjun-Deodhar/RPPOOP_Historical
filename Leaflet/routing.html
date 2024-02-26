@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Geolocation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="map" style="width:100%; height: 100vh"></div>
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js"
+    charset="utf-8"></script>
+
+
+    <!--GEOLOCATION-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.74.0/dist/L.Control.Locate.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.74.0/dist/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.4/dist/L.Control.Locate.min.css" />
+
+    <script>
+
+        var map = L.map('map').setView([18.516726, 73.856255], 13);
+
+        googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
+            maxZoom: 120000,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
+        googleStreets.addTo(map);
+
+        var curr = L.control.locate().addTo(map);  
+
+
+        if(!navigator.geolocation){
+        console.log("Your browser doesnt support geolocation");
+
+    }
+    else{
+        navigator.geolocation.getCurrentPosition(getposition);
+    }
+
+
+    var marker;
+
+    function getposition(position){
+        console.log(position);
+        var lat = position.coords.latitude
+        var lng = position.coords.longitude
+        
+        if(marker){
+            map.removelayer(marker);
+        }
+        
+        var marker = L.marker([lat,lng]).addTo(map);
+    
+
+        var mark = L.marker([18.516726, 73.856255]).addTo(map);
+
+        map.on('click', function (e) {
+            console.log(e)
+            var newMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+            L.Routing.control({
+                waypoints: [
+                    L.latLng([lat,lng]),
+                    //L.latLng(18.516726, 73.856255),
+                    L.latLng(e.latlng.lat, e.latlng.lng)
+                ]
+            }).on('routesfound', function (e) {
+                var routes = e.routes;
+                console.log(routes);
+
+                e.routes[0].coordinates.forEach(function (coord, index) {
+                    setTimeout(function () {
+                        marker.setLatLng([coord.lat, coord.lng]);
+                    }, 100 * index)
+                })
+
+            }).addTo(map);
+        });
+
+    }
+    </script>
+
+
+</body>
+
+</html>

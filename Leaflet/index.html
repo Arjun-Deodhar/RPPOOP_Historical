@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <style>
+        #map{
+            height:100vh;
+            width: 100vw;
+        }
+        .container{
+            position: absolute;
+            bottom: 0px;
+            right: 50%;
+            
+
+        }
+    </style>
+</head>
+<body>
+    <div id="map">
+        <div class="leaflet-control container"></div>
+    </div>
+    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script src="./map.js"></script>
+    
+    <script>
+        // latitude longitude and zoom 
+        var map = L.map('map').setView([18.516726, 73.856255], 13);
+
+    var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    });
+    osm.addTo(map);
+
+    // Use this site ot change the map theme https://leaflet-extras.github.io/leaflet-providers/preview/
+    
+    //Google map street layer
+    googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+    });
+    googleStreets.addTo(map);
+
+
+    googleSat = L.tileLayer('http://{s}.google.com/vt?lyrs=s&x={x}&y={y}&z={z}',{
+    maxZoom: 20,
+    subdomains:['mt0','mt1','mt2','mt3']
+    });
+    
+
+    //stack overflow link for the google maps https://stackoverflow.com/questions/33343881/leaflet-in-google-maps
+
+    //marker
+
+    //icon
+
+
+
+
+
+    
+
+    var m1 = L.marker([18.53, 73.849722])
+    var popup = m1.bindPopup("This is COEP <img src = 'COEP.jpg'>").openPopup()
+    popup.addTo(map);
+
+    
+
+
+    //including geo json files
+
+    var mapJSON = L.geoJSON(mapjson,{
+        onEachFeature : function(feature,layer){
+            layer.bindPopup('<b>COEP <b>')
+        },
+        style: {
+            fillColor: 'red',
+            fillOpacity: '0.5'
+        }
+    }).addTo(map)
+
+    //layer control system
+    var baseMaps = {
+        "OSM": osm,
+        "Google Streets":googleStreets,
+        "Google Satelite":googleSat,
+        
+    };
+
+    var overlayMaps = {
+        "Marker" : m1,
+        "Maps JSON" : mapJSON,
+    };
+
+    L.control.layers(baseMaps, overlayMaps,{collapsed:false}).addTo(map);
+
+    //mouseover and mouseon fucntions
+
+    map.on('mouseover', function(){
+        console.log("Your mouse is on the map");
+    })
+    map.on('mousemove',function(e){
+        document.getElementsByClassName('container').innerHTML = "lat: " + e.latlng.lat + "long: " + e.latlng.lng;
+
+        console.log("lat: " + e.latlng.lat + " long: " + e.latlng.lng)
+    })
+    </script>
+</body>
+</html>
