@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
+		<script type="text/javascript" src="index.js"> </script>
+		<meta charset='UTF-8'>
+		<title>Page Title</title>
+	</head>
+	<script src='main.js'></script>
+	<body>
+		<script>
+			document.write('hi')
+		</script>
+		<h1>from python to javascript/html</h1>
+		<h2>here is data</h2>
+		<script>
+			document.write("hello")
+			let http = new XMLHttpRequest();
+			http.open('get', 'markers.json', 'true');
+			http.send();
+			document.write("hello")
+			http.onload = function() {
+				if(this.readyState == 4 && this.status == 200) {
+					var mark = JSON.parse(this.responseText);
+					document.getElementById("header").innerHTML = mark.place_lat
+				}
+			}
+			document.write(mark[0].place_lat)
+		</script>
+
+		<!---
+		<script type='text/javascript' src='markers.js'>
+		</script>
+		<script>
+			var json4real = JSON.parse(markers)
+			for(i = 0; i < json4real.length; i++) {
+				document.write('<br><br>row: ', json4real[i].place_lat);
+				document.write('<br>col: ', json4real[i].place_long);
+				document.write('<br>val: ', json4real[i].place_name);
+			}
+		</script>
+		--->
+	</body>
+
+</html>
