@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2> Sign up </h2>
+<!-- now we create a an object of the LatLongForm class -->
+<form action="" method="post">
+	<p>
+		{{form.place_lat.label}} <br>
+		{{form.place_lat(size=30)}} <br>
+	</p>
+	<p>
+		{{form.place_long.label}} <br>
+		{{form.place_long(size=30)}} <br>
+	</p>
+	<p>
+		{{form.place_name.label}} <br>
+		{{form.place_name(size=15)}} <br>
+	</p>
+	<p>
+		{{form.place_desc.label}} <br>
+		{{form.place_desc(size=120)}} <br>
+	</p>
+	<p>
+		{{form.submit()}} <br>
+	</p>
+
+</form>
+
+{% endblock %}
