@@ -40,7 +40,8 @@
 		import users from './markers.json' assert {type:'json'};
 		console.log(users)
 
-        var map = L.map('map').setView([18.516726, 73.856255], 13);
+        //var map = L.map('map').setView([18.516726, 73.856255], 13);
+        var map = L.map('map').setView([users[4].place_lat, users[4].place_long], 13)
 
         googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
             maxZoom: 120000,
