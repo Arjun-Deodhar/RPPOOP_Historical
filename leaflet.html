@@ -106,8 +106,8 @@
 
         console.log(users); // Log the fetched data
         // Assuming users[4] exists and contains the necessary data
-        var lat = Number(users[4].place_lat);
-        var lon = Number(users[4].place_long);
+        var lat = Number(users[7].place_lat);
+        var lon = Number(users[7].place_long);
 
         // Assuming 'L' is properly defined and Leaflet library is included
         var map = L.map('map').setView([lat, lon], 13);
