@@ -1,45 +1,161 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"> </script>
-		<script type="text/javascript" src="index.js"> </script>
-		<meta charset='UTF-8'>
-		<title>Page Title</title>
-	</head>
-	<script src='main.js'></script>
-	<body>
-		<script>
-			document.write('hi')
-		</script>
-		<h1>from python to javascript/html</h1>
-		<h2>here is data</h2>
-		<script>
-			document.write("hello")
-			let http = new XMLHttpRequest();
-			http.open('get', 'markers.json', 'true');
-			http.send();
-			document.write("hello")
-			http.onload = function() {
-				if(this.readyState == 4 && this.status == 200) {
-					var mark = JSON.parse(this.responseText);
-					document.getElementById("header").innerHTML = mark.place_lat
-				}
-			}
-			document.write(mark[0].place_lat)
-		</script>
 
-		<!---
-		<script type='text/javascript' src='markers.js'>
-		</script>
-		<script>
-			var json4real = JSON.parse(markers)
-			for(i = 0; i < json4real.length; i++) {
-				document.write('<br><br>row: ', json4real[i].place_lat);
-				document.write('<br>col: ', json4real[i].place_long);
-				document.write('<br>val: ', json4real[i].place_name);
-			}
-		</script>
-		--->
-	</body>
+<head>
+    <title>Geolocation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.4/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.74.0/dist/L.Control.Locate.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+    <!--HTML-->
+    <!--**********************************************-->
+    <div id="map" style="width:100%; height: 100vh"></div>
+    <!--*************************************************-->
+
+
+    <!--libraries-->
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+
+
+    <!--GEOLOCATION-->
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.74.0/dist/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+    <!--*************************************************************************************************-->
+
+
+    <script>
+	class Queue {
+	constructor() {
+		this.items = {}
+		this.frontIndex = 0
+		this.backIndex = 0
+	}
+	enqueue(item) {
+		this.items[this.backIndex] = item
+		this.backIndex++
+		// return item + ' inserted'
+	}
+	dequeue() {
+		const item = this.items[this.frontIndex]
+		delete this.items[this.frontIndex]
+		this.frontIndex++
+		return item
+	}
+	peek() {
+		return this.items[this.frontIndex]
+	}
+	get printQueue() {
+		return this.items;
+	}
+	}
+	/*
+	const queue = new Queue()
+	console.log(queue.enqueue(7))
+	console.log(queue.enqueue(2))
+	console.log(queue.enqueue(6))
+	console.log(queue.enqueue(4))
+	console.log(queue.dequeue())
+	console.log(queue.peek())
+	let str = queue.printQueue;
+	console.log(str)
+	*/
+    	// returns distance between the two coordinates in km
+    	function distance_formula(lat1, lon1, lat2, lon2) {
+        	lon1 = lon1 * Math.PI / 180;
+        	lon2 = lon2 * Math.PI / 180;
+        	lat1 = lat1 * Math.PI / 180;
+        	lat2 = lat2 * Math.PI / 180;
+   
+        	// Haversine formula 
+        	let dlon = lon2 - lon1; 
+        	let dlat = lat2 - lat1;
+        	let a = Math.pow(Math.sin(dlat / 2), 2)
+                 + Math.cos(lat1) * Math.cos(lat2)
+                 * Math.pow(Math.sin(dlon / 2),2);
+               
+        	let c = 2 * Math.asin(Math.sqrt(a));
+        	// radius of the earth
+        	let r = 6371;
+        	return(c * r);
+    	}
+    	// now we will fetch the markers.json file to access all the markers
+    	fetch('./markers.json')
+    	.then((response) => response.json())
+    	.then((users) => {
+
+        console.log(users); // Log the fetched data
+        // Assuming users[4] exists and contains the necessary data
+        var lat = Number(users[4].place_lat);
+        var lon = Number(users[4].place_long);
+
+        // Assuming 'L' is properly defined and Leaflet library is included
+        var map = L.map('map').setView([lat, lon], 13);
+
+        // Additional map configuration or marker placement can be done here
+
+
+        //var map = L.map('map').setView([18.516726, 73.856255], 13);
+        //title layer
+        googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
+            maxZoom: 12000000000000,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
+        googleStreets.addTo(map);
+        googleSat = L.tileLayer('http://{s}.google.com/vt?lyrs=s&x={x}&y={y}&z={z}', {
+            maxZoom: 20000000000000,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
+
+        //title layer selection
+        var baseMaps = {
+            "Google Streets": googleStreets,
+            "Google Satelite": googleSat,
+
+        };
+
+        //title layer
+        var choice = L.control.layers(baseMaps).addTo(map);
+        //search bar option
+        var search = L.Control.geocoder().addTo(map);
+        //geolocation option
+        var curr = L.control.locate().addTo(map);
+        // now this is the code for marking all points in the markers.json file
+        var i;
+        var marker;
+
+        // plot all markers in the markers.json file
+        console.log(users.length);
+        for(i = 0; i < users.length; i++) {
+            marker = L.marker([Number(users[i].place_lat), Number(users[i].place_long)])
+            .addTo(map);
+        }
+        console.log(distance_formula(18.5294, 73.8565, 18.5117, 73.8391))
+        console.log(distance_formula(users[5].place_lat, users[5].place_long, users[6].place_lat, users[6].place_long))
+    })  
+    .catch((error) => console.error('Error fetching data:', error));
+    </script>
+
+</body>
 
 </html>
