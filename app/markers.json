@@ -1,18 +1,60 @@
 {
-  "users": [
-    {
-      "full_name": "Arjun",
-      "email": "abc@example.com",
-      "latitude": "13",
-      "longitude": "12",
-      "description": "hello"
-    },
-    {
-      "full_name": "Avnish Chaudhary",
-      "email": "phoenixelixir28@gmail.com",
-      "latitude": "123.57",
-      "longitude": "12",
-      "description": "hello"
-    }
-  ]
-}
+    "users": [
+      {
+        "full_name": "Avnish",
+        "email": "abc@example.com",
+        "latitude": "18.5074",
+        "longitude": "73.8077",
+        "description": "Kothrud"
+      },
+      {
+        "full_name": "Avnish Chaudhary",
+        "email": "phoenixelixir28@gmail.com",
+        "latitude": "18.5130",
+        "longitude": "73.6779",
+        "description": "Pirangut"
+      },
+      {
+        "full_name": "Arjun",
+        "email": "abc@example.com",
+        "latitude": "18.5602",
+        "longitude": "73.8031",
+        "description": "Aundh"
+      },
+      {
+        "full_name": "Arjun",
+        "email": "abc@example.com",
+        "latitude": "18.5084",
+        "longitude": "73.8176",
+        "description": "Ideal Colony"
+      },
+      {
+        "full_name": "Arjun",
+        "email": "abc@example.com",
+        "latitude": "18.5086",
+        "longitude": "73.8314",
+        "description": "Erandwane is a city in Pune with a hi hello how do you do I am really good and I really want you to see this happen once in a while and it has a lot of good hotels which are really fascinating to eat at"
+      },
+      {
+        "full_name": "Arjun",
+        "email": "abc@example.com",
+        "latitude": "18.6321",
+        "longitude": "73.8468",
+        "description": "Bhosri"
+      },
+      {
+        "full_name": "Arjun",
+        "email": "abc@example.com",
+        "latitude": "18.5421",
+        "longitude": "73.8816",
+        "description": "Bund Garden"
+      },
+      {
+        "full_name": "Damle",
+        "email": "damle@damle.com",
+        "latitude": "123",
+        "longitude": "234",
+        "description": "asdfas"
+      }
+    ]
+  }
