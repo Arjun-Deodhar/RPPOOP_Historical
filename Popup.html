@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+</head>
+<body>
+    <div id="map" style="width:100%; height: 100vh"></div>
+
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+
+    <script>
+        var map = L.map('map').setView([18.516726, 73.856255], 13);
+
+        L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        }).addTo(map);
+
+        var marker = L.marker([18.516726, 73.856255]).addTo(map);
+        var a = "The College of Engineering, Pune (COEP) is one of the oldest engineering colleges in Asia, established in 1854. It is an autonomous engineering institute affiliated with Savitribai Phule Pune University in Pune, Maharashtra, India. COEP is renowned for its academic excellence and is considered one of the premier engineering institutions in India"
+        marker.bindPopup("<img src = 'COEP.jpg' alt = 'No image'>");
+
+        // Function to play text-to-speech
+        function speakText(text) {
+            if ('speechSynthesis' in window) {
+                var utterance = new SpeechSynthesisUtterance(text);
+            
+                speechSynthesis.speak(utterance);
+            } else {
+                console.error("SpeechSynthesis is not supported in this browser.");
+            }
+        }
+
+        // popup open function
+        marker.on('popupopen', function() {
+            var popupText = this.getPopup().getContent();
+            speakText(a);
+        });
+    </script>
+</body>
+</html>
