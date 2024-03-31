@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Geolocation</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+    <div id="map" style="width:100%; height: 100vh"></div>
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js"
+    charset="utf-8"></script>
+
+<!--libraries-->
+<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.0/dist/L.Control.Locate.min.js"
+    charset="utf-8"></script>
+
+
+<!--GEOLOCATION-->
+
+<script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.74.0/dist/L.Control.Locate.min.js"
+    charset="utf-8"></script>
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+<!--*************************************************************************************************-->
+
+
+    <!--GEOLOCATION-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.74.0/dist/L.Control.Locate.min.css" />
+
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@v0.74.0/dist/L.Control.Locate.min.js"
+        charset="utf-8"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.74.4/dist/L.Control.Locate.min.css" />
+
+    <script>
+        // fetch API will fetch the markers.json file which has the data of all markers
+        fetch('./markers.json')
+    	.then(function(response) {
+            return response.json();
+        }).then(function(obj) { 
+
+        let markers = [];       // stores the markers array
+        console.log(obj);       // log the fetched data
+
+        markers = obj.users;    // copy the users array into markers
+        
+        // right now the 1st entry in array is used for setting view of the map
+        var lat = Number(markers[0].latitude);
+        var lon = Number(markers[0].longitude);
+
+        var map = L.map('map').setView([lat, lon], 13);
+
+        //title layer
+        googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
+            maxZoom: 12000000000000,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
+        googleStreets.addTo(map);
+        googleSat = L.tileLayer('http://{s}.google.com/vt?lyrs=s&x={x}&y={y}&z={z}', {
+            maxZoom: 20000000000000,
+            subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+        });
+
+        // title layer selection
+        var baseMaps = {
+            "Google Streets": googleStreets,
+            "Google Satelite": googleSat,
+
+        };
+
+        // title layer
+        var choice = L.control.layers(baseMaps).addTo(map);
+        // search bar option
+        // var search = L.Control.geocoder().addTo(map);
+        // geolocation option
+        var curr = L.control.locate().addTo(map);
+        // now this is the code for marking all points in the markers.json file
+        
+        var i;      // traverses the array
+        var marker; // marker to be plotted on the map
+
+        // plot all markers in the markers.json file
+        console.log(markers.length);
+        for(i = 0; i < markers.length; i++) {
+            marker = L.marker([Number(markers[i].latitude), Number(markers[i].longitude)])
+            .addTo(map);
+        }
+        
+        var curr = L.control.locate().addTo(map);  
+
+
+        if(!navigator.geolocation){
+        console.log("Your browser doesnt support geolocation");
+
+    }
+    else{
+        navigator.geolocation.getCurrentPosition(getposition);
+    }
+
+    function get_near_markers_wrt_currpos(markers, currlat, currlong) 
+    {
+
+        var i;                  // traverses the array
+        var dist;               // stores distance between two points
+        var near = [];          // array of near marker indices
+        var j = 0;              // traverses near array
+        var closeness = 2;      // how close in km means "near"
+        var marklat, marklong;  // marker latitude and longitude in number format
+
+        // now we loop the markers array
+        // for each marker, check if current position is near to it or not
+        for(i = 0; i < markers.length; i++) 
+        {
+            marklat = Number(markers[i].latitude);
+            marklong = Number(markers[i].longitude);
+            dist = distance_formula(marklat, marklong, curr_lat, curr_long);
+            
+            // if marker is near to coord, then append in near array
+            if(dist < closeness) 
+            {
+                near[j] = i;
+                j++;
+            }
+        }
+        return near;
+    }
+
+
+    // returns distance between the two coordinates in km
+    // coordinates are taken as 
+    // latitude of point 1, longitude of point 1, latitude of point 2, longitude of point 2
+    function distance_formula(lat1, lon1, lat2, lon2) {
+
+        	lat1 = lat1 * Math.PI / 180;
+            lon1 = lon1 * Math.PI / 180;
+        	lat2 = lat2 * Math.PI / 180;
+            lon2 = lon2 * Math.PI / 180;
+
+        	// Haversine formula for calculating distance
+        	let dlon = lon2 - lon1; 
+        	let dlat = lat2 - lat1;
+        	let a = Math.pow(Math.sin(dlat / 2), 2)
+                 + Math.cos(lat1) * Math.cos(lat2)
+                 * Math.pow(Math.sin(dlon / 2),2);
+               
+        	let c = 2 * Math.asin(Math.sqrt(a));
+
+        	// radius of the earth
+        	let r = 6371;
+        	return(c * r);
+    }
+
+    function getposition(position){
+
+    /* calculates distance of current coorinates from all markers
+     * returns an array of inetgers
+     * this array contains indices nearby markers from the "markers" array
+     */
+    
+
+        console.log(position);
+
+        var lat = position.coords.latitude
+        var lng = position.coords.longitude
+        
+        if(marker)
+        {
+            map.removelayer(marker);
+        }
+        
+        var marker = L.marker([lat,lng]).addTo(map);
+    
+        function speakText(text) 
+        {
+            if ('speechSynthesis' in window) 
+            {
+                var utterance = new SpeechSynthesisUtterance(text);
+            
+                speechSynthesis.speak(utterance);
+            } else 
+            {
+                console.error("SpeechSynthesis is not supported in this browser.");
+            }
+        }
+        
+        /* 
+         * on clicking at any location on the map
+         * a route to it from current location is created
+         * one marker simualtes the journey by fetching route coordinates
+         * also, get_near_markers is also called and locations are enqueued
+         * this goes on until the dummy marker reaches the destination
+         * directions of route are also displayed to user
+         *
+         */
+        function compare_coordinates(lat1, long1, lat2, long2){
+            if(lat1 == lat2 && long1 == long2) {
+                return 1
+            }
+            return 0
+        }
+        map.on('click', function (e) 
+        {
+            console.log(e)
+            var newMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+            L.Routing.control({
+                waypoints: [
+                    L.latLng([lat,lng]),
+                    L.latLng(e.latlng.lat, e.latlng.lng)
+                ]
+            }).on('routesfound', function (e) {
+                var routes = e.routes;
+                console.log("e.routes is ", e.routes);
+                console.log("e.routes.coorinates is ", e.routes[0].coordinates);
+                coordinates = e.routes[0].coordinates;
+
+                var queued = [];        // queue for the marker's description
+                var q = 0;              // traverses queue
+                var voice_notes = [];   // queue for the marker's indices
+                var vn = 0;             // traverses the queue
+                var timeout = 1000;      // interval of calling the below function
+                console.log("routes are", e.routes[0])
+                console.log("length of e.routes is ", e.routes[0].coordinates.length)
+                
+                length_route = e.routes[0].coordinates.length;
+                coorindates = e.routes[0].coordinates;
+                console.log(coordinates)
+                
+                route_end_lat  = e.routes[0].coordinates[e.routes[0].coordinates.length - 1].lat;
+                route_end_long = e.routes[0].coordinates[e.routes[0].coordinates.length - 1].lng;
+                console.log("end coordinates are ", route_end_lat, route_end_long)
+                
+                e.routes[0].coordinates.forEach(function (coord, index) 
+                {   
+                        // this function will be called after a certain timeout period                     
+                        setTimeout(function () {
+                       
+                        
+                        getposition(position);
+                        curr_lat  = position.coords.latitude ;
+                        curr_long = position.coords.longitude; 
+                        dist = distance_formula(coord.lat, coord.lng, position.coords.latitude, position.coords.longitude);
+                        //console.log("distance is ", dist);
+                        dist_end = distance_formula(route_end_lat, route_end_long, curr_lat, curr_long)
+                        console.log("end distance is ", dist_end);
+                        if(dist > 0.75) 
+                        {
+                            return;
+                        }
+                        if(dist_end < 0.5) 
+                        {
+                            console.log("End reached")
+                            return;
+                        }
+                        //console.log("position is ", position);
+                        //onsole.log("coord is ", coord)
+
+                        var i;      // traverses the array
+                        
+                        // get the array of indices of nearby markers
+                        near  = get_near_markers_wrt_currpos(markers, curr_lat, curr_long);
+                        console.log("near array is ", near)
+                        console.log("distace between currpos and modern colllege is ", distance_formula(markers[8].latitude, markers[8].longitude, curr_lat, curr_long))
+                        // for each nearby marker, if it is not in the queue, enqueue it
+                        if (dist_end < 0.5) 
+                            {
+                                console.log("End reached")
+                                return;
+                            }
+                        for(i = 0; i < near.length; i++) 
+                        {
+                            
+                            if(queued.includes(markers[near[i]].description) == false) 
+                            {
+                                console.log("found a nearby marker : ", markers[near[i]].description);
+                                queued[q] = markers[near[i]].description;
+                                speakText(queued[q - 1]);
+                                voice_notes[vn] = near[i];
+                                q++;
+                                vn++;
+                            }
+
+        
+                            // console.log(markers[near[i]].description)
+                        }     
+                        marker.setLatLng([curr_lat, curr_long]);
+                    }, timeout * index)
+
+                })
+                speakText(queued[q - 1]);
+    
+                console.log("queued array is : ", queued);
+                console.log("voice notes array is : ", voice_notes)
+
+            }).addTo(map);
+        });
+
+    }}).catch((error) => console.error('Error fetching data:', error));
+    </script>
+
+</body>
+
+</html>
