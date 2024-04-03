@@ -1,0 +1,74 @@
+{
+  "users": [
+    {
+      "full_name": "Avnish",
+      "email": "abc@example.com",
+      "latitude": "18.5074",
+      "longitude": "73.8077",
+      "description": "Kothrud"
+    },
+    {
+      "full_name": "Avnish Chaudhary",
+      "email": "phoenixelixir28@gmail.com",
+      "latitude": "18.5130",
+      "longitude": "73.6779",
+      "description": "Pirangut"
+    },
+    {
+      "full_name": "Arjun",
+      "email": "abc@example.com",
+      "latitude": "18.5602",
+      "longitude": "73.8031",
+      "description": "Aundh"
+    },
+    {
+      "full_name": "Arjun",
+      "email": "abc@example.com",
+      "latitude": "18.5084",
+      "longitude": "73.8176",
+      "description": "Ideal Colony"
+    },
+    {
+      "full_name": "Arjun",
+      "email": "abc@example.com",
+      "latitude": "18.5086",
+      "longitude": "73.8314",
+      "description": "Erandwane is a city in Pune "
+    },
+    {
+      "full_name": "Arjun",
+      "email": "abc@example.com",
+      "latitude": "18.6321",
+      "longitude": "73.8468",
+      "description": "Bhosri"
+    },
+    {
+      "full_name": "Arjun",
+      "email": "abc@example.com",
+      "latitude": "18.5421",
+      "longitude": "73.8816",
+      "description": "Bund Garden"
+    },
+    {
+      "full_name": "Damle",
+      "email": "damle@damle.com",
+      "latitude": "123",
+      "longitude": "234",
+      "description": "asdfas"
+    },
+    {
+      "full_name": "Avnish Chaudhary",
+      "email": "phoenixelixir28@gmail.com",
+      "latitude": "12.12",
+      "longitude": "123.12",
+      "description": "jfjdhfdfsl"
+    },
+    {
+      "full_name": "Avnish Chaudhary",
+      "email": "phoenixelixir28@gmail.com",
+      "latitude": "18.5257",
+      "longitude": "73.8460",
+      "description": "Coep is college of engineering pune in shivajinagar"
+    }
+  ]
+}
