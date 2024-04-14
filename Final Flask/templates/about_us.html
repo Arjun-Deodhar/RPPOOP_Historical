@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        background-image: url("/static/coep_mainbuilding.jpg");
+        background-size: auto 1000px;
+    }
+
+    header {
+        background-color: #007bff;
+        color: #fff;
+        padding: 1px;
+        text-align: center;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 0 20px;
+
+    }
+
+    .person {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 40px;
+    }
+
+    .person img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+    }
+
+    .person-info {
+        text-align: center;
+        color: white;
+        font-size: x-large;
+    }
+
+    @media only screen and (max-width: 600px) {
+        .person {
+            flex-direction: column;
+            align-items: center;
+        }
+    }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>About Us</h1>
+</header>
+
+<div class="container">
+    <div class="person">
+        <div class="person-info">
+            <img src="person1.jpg" alt="Person 1">
+            <h2>Avnish Chaudhary</h2>
+            <p>MIS : 612203026</p>
+        </div>
+        <div class="person-info">
+            <img src="person2.jpg" alt="Person 2">
+            <h2>Arjun Deodhar</h2>
+            <p>MIS : 612203035</p>
+        </div>
+    </div>
+    
+</div>
+
+</body>
+</html>
