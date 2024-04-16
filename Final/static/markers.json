@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "full_name": "Avnish Chaudhary",
+      "email": "abc@example.com",
+      "latitude": "18.6584",
+      "longitude": "72.8773",
+      "description": "Alibag, also known as Alibaug, is a coastal town, just south of Mumbai, in western India. Its known for its beaches like Alibag Beach and Varsoli Beach."
+    },
+    {
+      "full_name": "Avnish Chaudhary",
+      "email": "abc@example.com",
+      "latitude": "18.64917",
+      "longitude": "72.87828",
+      "description": "Hanuman Temple near Alibaug beach"
+    },
+    {
+      "full_name": "Avnish Chaudhary",
+      "email": "abc@example.com",
+      "latitude": "18.05030",
+      "longitude": "73.01799",
+      "description": "Somjai Devi Temple near Srivardhan Beach."
+    },
+    {
+      "full_name": "Avnish Chaudhary",
+      "email": "abc@example.com",
+      "latitude": "18.04781",
+      "longitude": "73.01698",
+      "description": "This is a monument of the historical Balaji Vishwanath Peshwe"
+    }
+  ]
+}
